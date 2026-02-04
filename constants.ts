@@ -1,3 +1,4 @@
+
 import { UserRole } from './types';
 
 export const DIESEL_PRICE_PER_LITER = 110; // BDT
@@ -11,7 +12,7 @@ export const MOCK_STATS = {
 };
 
 export const CONTACT_INFO = {
-  address: "123 Green Energy Way, Dhaka, Bangladesh",
+  address: "Gulshan 2, Dhaka, Bangladesh",
   phone: "+880 1712 345678",
-  email: "contact@greengine.bd"
+  email: "hello@greengine.bd"
 };
