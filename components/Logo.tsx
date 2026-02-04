@@ -1,42 +1,40 @@
 import React from 'react';
-import { Leaf, Settings } from 'lucide-react';
+import { Leaf, Droplet } from 'lucide-react';
 
 interface LogoProps {
   className?: string;
-  variant?: 'light' | 'dark';
+  variant?: 'light' | 'dark'; // 'dark' for white bg (Header), 'light' for dark bg (Footer)
 }
 
 export const Logo: React.FC<LogoProps> = ({ className = '', variant = 'dark' }) => {
-  const isDark = variant === 'dark';
-  
+  const isDarkBg = variant === 'light';
+
   return (
-    <div className={`flex items-center ${className}`}>
-      {/* Icon Composite: Leaf with a Gear inside */}
-      <div className="relative flex items-center justify-center mr-2">
-        <Leaf className={`h-8 w-8 ${isDark ? 'text-green-600' : 'text-green-500'} fill-current`} />
-        {/* The gear is positioned absolutely to sit "inside" the leaf */}
-        <Settings className={`absolute h-3.5 w-3.5 text-white/90 animate-[spin_10s_linear_infinite]`} />
+    <div className={`flex items-center gap-2 group select-none ${className}`}>
+      {/* Graphic Element */}
+      <div className="relative flex items-center justify-center">
+        <div className={`absolute inset-0 bg-green-500/20 rounded-full blur-lg group-hover:scale-150 transition-transform duration-500 ${isDarkBg ? 'opacity-20' : 'opacity-40'}`}></div>
+        <div className="relative flex items-center">
+          <Leaf 
+            className={`h-10 w-10 md:h-12 md:w-12 ${isDarkBg ? 'text-green-400' : 'text-green-600'} transform -rotate-12 transition-transform group-hover:rotate-0`} 
+            strokeWidth={2.5}
+          />
+          <Droplet 
+            className={`h-5 w-5 md:h-6 md:w-6 absolute bottom-0 -right-1 ${isDarkBg ? 'text-emerald-300' : 'text-emerald-500'} fill-current animate-pulse`} 
+          />
+        </div>
       </div>
-      
-      {/* Text Composite */}
-      <div className="flex items-baseline leading-none select-none">
-        <span className={`font-kaushan text-3xl ${isDark ? 'text-green-700' : 'text-green-400'} -mr-1 z-10`}>
-          Green
-        </span>
-        <div className={`flex items-baseline font-sans text-2xl font-bold tracking-tight ${isDark ? 'text-slate-700' : 'text-slate-100'}`}>
-          <span>g</span>
-          <span className="relative mx-[2px] flex items-end self-end mb-0.5">
-             {/* Piston SVG to replace 'i' */}
-             <svg width="6" height="16" viewBox="0 0 6 16" fill="currentColor" aria-hidden="true">
-               {/* Piston Head */}
-               <rect x="0" y="0" width="6" height="4" rx="1" />
-               {/* Connecting Rod */}
-               <rect x="2" y="4" width="2" height="8" />
-               {/* Crank attachment */}
-               <circle cx="3" cy="14" r="2" />
-             </svg>
+
+      {/* Typography */}
+      <div className="flex flex-col leading-none">
+        <div className="flex items-baseline">
+          <span className={`text-3xl md:text-4xl font-black tracking-tighter ${isDarkBg ? 'text-white' : 'text-slate-800'}`}>
+            <span className="text-green-600">Green</span>
+            <span className={isDarkBg ? 'text-slate-300' : 'text-slate-500'}>gine</span>
           </span>
-          <span>ne</span>
+        </div>
+        <div className={`text-[10px] md:text-[11px] font-bold uppercase tracking-[0.2em] mt-0.5 ${isDarkBg ? 'text-green-400/80' : 'text-slate-400'}`}>
+          Premium Biodiesel
         </div>
       </div>
     </div>
