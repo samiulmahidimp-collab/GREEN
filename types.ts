@@ -1,8 +1,11 @@
 export enum UserRole {
   ADMIN = 'ADMIN',
   BUYER = 'BUYER',
-  SELLER = 'SELLER' // Restaurant selling UCO
+  SELLER = 'SELLER', // UCO Donor
+  EMPLOYEE = 'EMPLOYEE'
 }
+
+export type BuyerPurpose = 'garments' | 'factories' | 'petrol_pump' | 'own' | 'international';
 
 export interface User {
   id: string;
@@ -10,6 +13,8 @@ export interface User {
   email: string;
   role: UserRole;
   organization?: string;
+  balance: number;
+  purpose?: BuyerPurpose;
 }
 
 export interface Order {
@@ -17,13 +22,15 @@ export interface Order {
   date: string;
   amountLiters: number;
   totalPrice: number;
-  status: 'pending' | 'completed' | 'cancelled';
-  type: 'purchase' | 'collection'; // Purchase = buying diesel, Collection = selling UCO
+  status: 'pending' | 'completed' | 'cancelled' | 'in-review';
+  type: 'purchase' | 'collection' | 'glycerin_inquiry';
+  paymentMethod?: string;
+  location?: string;
 }
 
-export interface DashboardStats {
-  totalDieselSold: number;
-  totalUCOCollected: number;
-  revenue: number;
-  activeUsers: number;
+export interface Task {
+  id: string;
+  title: string;
+  status: 'pending' | 'completed';
+  deadline: string;
 }

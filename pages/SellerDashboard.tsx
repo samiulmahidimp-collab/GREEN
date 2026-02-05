@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { User, Order } from '../types';
 import { Button } from '../components/Button';
 import { UCO_BUYBACK_PRICE } from '../constants';
-import { Truck, DollarSign, Calendar, MapPin } from 'lucide-react';
+import { Truck, DollarSign, Calendar, MapPin, Smartphone, Banknote, Building2 } from 'lucide-react';
 
 interface SellerDashboardProps {
   user: User;
@@ -11,9 +11,9 @@ interface SellerDashboardProps {
 export const SellerDashboard: React.FC<SellerDashboardProps> = ({ user }) => {
   const [liters, setLiters] = useState<number>(50);
   const [pickupDate, setPickupDate] = useState('');
-  const [pickups, setPickups] = useState<Order[]>([
-    { id: 'PKP-889', date: '2023-10-10', amountLiters: 40, totalPrice: 40 * UCO_BUYBACK_PRICE, status: 'completed', type: 'collection' },
-  ]);
+  const [location, setLocation] = useState('');
+  const [payoutMethod, setPayoutMethod] = useState<'cash' | 'bkash' | 'nagad'>('cash');
+  const [pickups, setPickups] = useState<Order[]>([]);
   const [showSuccess, setShowSuccess] = useState(false);
 
   const estimatedEarnings = liters * UCO_BUYBACK_PRICE;
@@ -21,123 +21,146 @@ export const SellerDashboard: React.FC<SellerDashboardProps> = ({ user }) => {
   const handleRequest = (e: React.FormEvent) => {
     e.preventDefault();
     const newPickup: Order = {
-      id: `PKP-${Math.floor(Math.random() * 10000)}`,
+      id: `UCO-${Math.floor(Math.random() * 10000)}`,
       date: pickupDate || new Date().toISOString().split('T')[0],
       amountLiters: liters,
       totalPrice: estimatedEarnings,
       status: 'pending',
-      type: 'collection'
+      type: 'collection',
+      location,
+      paymentMethod: payoutMethod
     };
     setPickups([newPickup, ...pickups]);
     setShowSuccess(true);
-    setTimeout(() => setShowSuccess(false), 3000);
+    setTimeout(() => setShowSuccess(false), 5000);
   };
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-slate-900">Restaurant Partner Dashboard</h1>
-        <p className="text-slate-500">{user.organization || user.name} • Convert your waste into revenue.</p>
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-12 gap-8">
+        <div>
+          <h1 className="text-5xl font-black text-slate-900 tracking-tight leading-none">UCO Donor Portal</h1>
+          <p className="text-slate-500 mt-2 uppercase text-xs font-black tracking-widest italic">Supplying from: {user.organization || 'Independent Partner'}</p>
+        </div>
+        <div className="bg-green-600 p-8 rounded-[2.5rem] text-white shadow-2xl shadow-green-600/20 group">
+           <div className="flex items-center gap-6">
+              <div className="w-12 h-12 bg-white/20 rounded-2xl flex items-center justify-center group-hover:rotate-12 transition-transform">
+                 <DollarSign className="text-white h-6 w-6" />
+              </div>
+              <div>
+                 <p className="text-[10px] font-black uppercase opacity-80 mb-1">Buyback Rate</p>
+                 <p className="text-3xl font-black">{UCO_BUYBACK_PRICE} ৳ <span className="text-sm font-medium opacity-60">/ Liter</span></p>
+              </div>
+           </div>
+        </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        
-        {/* Collection Request Form */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
         <div className="lg:col-span-2">
-          <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 md:p-8">
-            <h2 className="text-xl font-bold text-slate-900 mb-6 flex items-center">
-              <Truck className="h-6 w-6 text-green-600 mr-2" />
-              Schedule UCO Pickup
+          <div className="bg-white rounded-[4rem] shadow-sm border border-slate-100 p-12">
+            <h2 className="text-2xl font-black text-slate-900 mb-12 flex items-center">
+              <Truck className="h-6 w-6 text-green-600 mr-4" /> Schedule Collection Fleet
             </h2>
             
-            <form onSubmit={handleRequest}>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+            <form onSubmit={handleRequest} className="space-y-10">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-2">Available Quantity</label>
-                  <div className="relative">
-                    <input
-                      type="number"
-                      min="20"
-                      value={liters}
-                      onChange={(e) => setLiters(Number(e.target.value))}
-                      className="w-full pl-4 pr-12 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-green-500 outline-none text-lg font-medium"
-                    />
-                    <span className="absolute right-4 top-3.5 text-slate-400">L</span>
-                  </div>
-                  <p className="text-xs text-slate-500 mt-2">Minimum pickup: 20 Liters</p>
+                  <label className="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-4">Quantity (Est. Liters)</label>
+                  <input
+                    type="number" min="20" required
+                    value={liters}
+                    onChange={(e) => setLiters(Number(e.target.value))}
+                    className="w-full px-8 py-5 bg-slate-50 border-2 border-slate-100 rounded-2xl focus:border-green-600 outline-none font-black text-2xl"
+                  />
                 </div>
-
                 <div>
-                   <label className="block text-sm font-medium text-slate-700 mb-2">Preferred Date</label>
+                   <label className="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-4">Preferred Date</label>
                    <input 
-                    type="date" 
-                    required
+                    type="date" required
                     value={pickupDate}
                     onChange={(e) => setPickupDate(e.target.value)}
-                    className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-green-500 outline-none"
+                    className="w-full px-8 py-5 bg-slate-50 border-2 border-slate-100 rounded-2xl focus:border-green-600 outline-none font-bold"
                    />
                 </div>
               </div>
 
-              <div className="bg-yellow-50 border border-yellow-100 rounded-lg p-4 mb-8 flex items-start">
-                <DollarSign className="h-5 w-5 text-yellow-600 mr-2 mt-0.5" />
-                <div>
-                  <h4 className="font-semibold text-yellow-800">Estimated Earnings</h4>
-                  <p className="text-sm text-yellow-700">
-                    At {UCO_BUYBACK_PRICE} BDT/L, you will receive <span className="font-bold">{estimatedEarnings.toLocaleString()} BDT</span> upon successful verification of oil quality.
-                  </p>
+              <div>
+                <label className="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-4">Collection Point Address</label>
+                <div className="relative">
+                  <MapPin className="absolute left-8 top-6 h-6 w-6 text-slate-300" />
+                  <input 
+                    type="text" required
+                    value={location}
+                    onChange={(e) => setLocation(e.target.value)}
+                    placeholder="Enter full location for our driver"
+                    className="w-full pl-20 pr-8 py-5 bg-slate-50 border-2 border-slate-100 rounded-2xl focus:border-green-600 outline-none font-bold"
+                  />
                 </div>
               </div>
 
-              <Button type="submit" size="lg" className="w-full">
-                Request Pickup
+              <div>
+                <label className="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-8 text-center">How would you like to collect payment?</label>
+                <div className="grid grid-cols-3 gap-6">
+                  {[
+                    { id: 'cash', label: 'Cash', icon: <Banknote />, color: 'bg-green-600' },
+                    { id: 'bkash', label: 'bKash', icon: <Smartphone />, color: 'bg-[#E2136E]' },
+                    { id: 'nagad', label: 'Nagad', icon: <Smartphone />, color: 'bg-[#ED1C24]' },
+                  ].map(p => (
+                    <button 
+                      key={p.id} type="button"
+                      onClick={() => setPayoutMethod(p.id as any)}
+                      className={`flex flex-col items-center justify-center p-8 rounded-[2.5rem] border-2 transition-all relative overflow-hidden group ${payoutMethod === p.id ? `${p.color} text-white border-transparent shadow-2xl` : 'bg-slate-50 text-slate-400 border-slate-100 hover:border-slate-300'}`}
+                    >
+                      <div className="mb-3 transition-transform group-hover:scale-110">{p.icon}</div>
+                      <span className="text-[10px] font-black uppercase tracking-widest">{p.label}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div className="p-10 bg-slate-900 rounded-[3rem] text-white flex items-center justify-between">
+                <div>
+                  <h4 className="font-black text-green-400 uppercase tracking-widest text-[10px] mb-2">Estimated Partner Earning</h4>
+                  <p className="text-5xl font-black">{estimatedEarnings.toLocaleString()} <span className="text-xl font-medium text-slate-500">৳</span></p>
+                </div>
+                <div className="w-16 h-16 bg-white/10 rounded-3xl flex items-center justify-center backdrop-blur-md">
+                   <Building2 className="text-green-500" />
+                </div>
+              </div>
+
+              <Button type="submit" size="lg" className="w-full h-24 text-2xl font-black rounded-[2rem] shadow-2xl shadow-green-600/20 active:scale-95">
+                Dispatch Collection Team
               </Button>
             </form>
             
             {showSuccess && (
-              <div className="mt-4 p-4 bg-green-50 text-green-700 rounded-lg flex items-center animate-in fade-in slide-in-from-top-2">
-                <Calendar className="h-5 w-5 mr-2" />
-                Pickup scheduled! Our team will call you to confirm.
+              <div className="mt-12 p-8 bg-green-50 border-2 border-green-200 text-green-800 rounded-[3rem] flex items-center animate-in slide-in-from-top-4">
+                <Calendar className="h-10 w-10 mr-6 text-green-600" />
+                <div className="font-black uppercase tracking-widest text-xs leading-relaxed">
+                  Collection Ticket Created! <br/>
+                  <span className="opacity-60 text-[9px]">Our employee will arrive with payment on the scheduled date.</span>
+                </div>
               </div>
             )}
           </div>
         </div>
 
-        {/* Stats & History */}
-        <div className="space-y-6">
-          <div className="bg-gradient-to-br from-green-600 to-emerald-800 text-white rounded-2xl p-6 shadow-lg">
-            <h3 className="text-sm font-medium text-green-100 uppercase tracking-wider mb-4">Total Earnings</h3>
-            <div className="flex items-baseline">
-              <span className="text-4xl font-bold">{pickups.reduce((acc, curr) => acc + curr.totalPrice, 0).toLocaleString()}</span>
-              <span className="ml-2 text-xl opacity-80">BDT</span>
-            </div>
-            <div className="mt-4 pt-4 border-t border-white/10 flex justify-between text-sm text-green-50">
-              <span>Total Recycled</span>
-              <span>{pickups.reduce((acc, curr) => acc + curr.amountLiters, 0)} Liters</span>
-            </div>
-          </div>
-
-          <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
-            <h3 className="font-bold text-slate-900 mb-4">Pickup History</h3>
-            <div className="space-y-4">
-              {pickups.map((pickup) => (
-                <div key={pickup.id} className="flex justify-between items-center p-3 hover:bg-slate-50 rounded-lg transition-colors border border-transparent hover:border-slate-100">
-                  <div>
-                    <div className="font-medium text-slate-900">{pickup.date}</div>
-                    <div className="text-xs text-slate-500">{pickup.amountLiters}L • {pickup.totalPrice} BDT</div>
-                  </div>
-                  <span className={`text-xs px-2 py-0.5 rounded-full ${
-                    pickup.status === 'completed' ? 'bg-green-100 text-green-700' : 'bg-orange-100 text-orange-700'
-                  }`}>
-                    {pickup.status === 'pending' ? 'Scheduled' : 'Collected'}
-                  </span>
+        <div className="space-y-8">
+           <div className="bg-slate-50 p-10 rounded-[4rem] border border-slate-100">
+              <h3 className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-10">Circular Impact</h3>
+              <div className="space-y-12">
+                <div className="flex items-center gap-6">
+                   <div className="w-14 h-14 bg-white rounded-2xl border border-slate-100 flex items-center justify-center shadow-sm">
+                      <Truck className="text-green-600 h-6 w-6" />
+                   </div>
+                   <div>
+                     <p className="text-3xl font-black text-slate-900">{pickups.length}</p>
+                     <p className="text-[9px] text-slate-400 font-black uppercase tracking-widest">Total Supplies</p>
+                   </div>
                 </div>
-              ))}
-              {pickups.length === 0 && <p className="text-slate-500 text-sm text-center py-4">No history yet.</p>}
-            </div>
-          </div>
+              </div>
+           </div>
         </div>
-
       </div>
     </div>
   );
