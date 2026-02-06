@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Mail, Gavel, Code, Briefcase, Award, Trophy, Star, ShieldCheck, User } from 'lucide-react';
 
@@ -24,6 +25,11 @@ export const About: React.FC = () => {
       name: "Abrar Ibn Zaman",
       position: "CFO",
       description: "Overseeing fiscal strategy and investment models for green energy scaling."
+    },
+    {
+      name: "Jannatul Islam Oyshee",
+      position: "Digital Media Manager",
+      description: "Managing digital presence, corporate posts, and partner communications across the network."
     }
   ];
 
@@ -51,13 +57,13 @@ export const About: React.FC = () => {
         </div>
       </section>
 
-      {/* Team Section (Minimalist, No Pictures) */}
+      {/* Team Section */}
       <section className="py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="mb-20">
            <h2 className="text-4xl font-black text-slate-900 mb-2 tracking-tight">Leadership Executive</h2>
            <p className="text-slate-500 font-medium italic">Professional identity cards of the circular energy strategic team.</p>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
           {team.map((member, idx) => (
             <div key={idx} className="group p-10 bg-slate-50 rounded-[3rem] border border-slate-100 hover:bg-white hover:border-red-600 hover:shadow-2xl transition-all duration-500">
               <div className="mb-8 w-16 h-16 bg-slate-900 text-white rounded-2xl flex items-center justify-center group-hover:rotate-12 transition-transform shadow-lg">
