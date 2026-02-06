@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { UserRole, User } from '../types';
 import { Button } from './Button';
-import { X, ShieldCheck, Lock, Mail, User as UserIcon, ArrowRight, Zap, Globe } from 'lucide-react';
+import { X, ShieldCheck, Lock, Mail, User as UserIcon, ArrowRight } from 'lucide-react';
 
 interface AuthModalProps {
   isOpen: boolean;
@@ -36,68 +36,32 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onLogin }
   };
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-950/90 backdrop-blur-md">
-      <div className="bg-white w-full max-w-5xl min-h-[650px] overflow-hidden rounded-[2.5rem] shadow-[0_40px_120px_rgba(0,0,0,0.7)] flex flex-col md:flex-row border border-slate-800 animate-in fade-in zoom-in duration-300">
-        
-        {/* Left Side: Brand & Impact */}
-        <div className="md:w-[45%] bg-slate-900 p-12 md:p-16 flex flex-col justify-between relative overflow-hidden">
-          <div className="absolute inset-0 opacity-20 pointer-events-none">
-             <div className="absolute inset-0 bg-[radial-gradient(#16a34a_1px,transparent_1px)] [background-size:24px_24px]"></div>
-          </div>
-          <div className="absolute top-0 right-0 w-64 h-64 bg-green-500/10 rounded-full blur-[100px] -mr-32 -mt-32"></div>
-          
-          <div className="relative z-10">
-            <div className="h-16 w-16 bg-white rounded-2xl flex items-center justify-center mb-12 shadow-2xl">
-              <ShieldCheck className="text-green-600 h-10 w-10" />
-            </div>
-            <h3 className="text-4xl font-black text-white leading-[1.1] tracking-tighter mb-8">
-              Securing the <br/> 
-              <span className="text-green-500">Green Revolution.</span>
-            </h3>
-            <div className="space-y-6">
-               {[
-                 { icon: <Zap className="h-4 w-4" />, text: 'Industrial Grade B100 Certification' },
-                 { icon: <Globe className="h-4 w-4" />, text: 'Circular Economy Integration' },
-                 { icon: <Lock className="h-4 w-4" />, text: 'Secure Supply Chain Protocols' }
-               ].map((item, i) => (
-                 <div key={i} className="flex items-center text-[11px] font-black uppercase tracking-[0.2em] text-slate-400">
-                    <div className="mr-4 p-2 bg-white/5 rounded-lg text-green-500">{item.icon}</div>
-                    {item.text}
-                 </div>
-               ))}
-            </div>
-          </div>
-
-          <div className="relative z-10 pt-12 border-t border-white/10">
-             <p className="text-[10px] text-slate-500 font-black uppercase tracking-[0.4em]">Team Code Red</p>
-             <p className="text-[9px] text-slate-600 mt-2 font-bold uppercase tracking-widest leading-relaxed">
-                Authorized access only. All sessions are monitored for security compliance.
-             </p>
-          </div>
-        </div>
-
-        {/* Right Side: Form */}
-        <div className="flex-1 bg-white p-12 md:p-16 relative flex flex-col justify-center">
-          <button onClick={onClose} className="absolute top-10 right-10 text-slate-300 hover:text-slate-900 transition-colors p-2">
-            <X size={32} />
+    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-900/80 backdrop-blur-md">
+      <div className="bg-white w-full max-w-md overflow-hidden rounded-[2.5rem] shadow-2xl border border-slate-200 animate-in fade-in zoom-in duration-300">
+        <div className="p-10 relative">
+          <button onClick={onClose} className="absolute top-8 right-8 text-slate-300 hover:text-slate-900 transition-colors">
+            <X size={24} />
           </button>
 
-          <div className="mb-12">
-             <h2 className="text-5xl font-black text-slate-900 tracking-tighter mb-4 leading-none">
-               {isLoginMode ? 'Sign In' : 'Partner Portal'}
+          <div className="text-center mb-8">
+             <div className="inline-flex items-center justify-center w-14 h-14 bg-green-50 rounded-2xl mb-4">
+                <ShieldCheck className="text-green-600 h-8 w-8" />
+             </div>
+             <h2 className="text-3xl font-black text-slate-900 tracking-tighter">
+               {isLoginMode ? 'Welcome Back' : 'Register Partner'}
              </h2>
-             <p className="text-slate-500 font-medium italic text-sm">Select your credential level to access the platform.</p>
+             <p className="text-slate-500 font-medium text-xs mt-1 italic">Greengine Circular Energy Network</p>
           </div>
 
-          <div className="mb-10">
-            <div className="flex gap-2 p-1.5 bg-slate-100 rounded-2xl border border-slate-200">
+          <div className="mb-8">
+            <div className="flex gap-1 p-1 bg-slate-100 rounded-xl border border-slate-200">
               {currentRoles.map((role) => (
                 <button
                   key={role}
                   onClick={() => setActiveTab(role)}
-                  className={`flex-1 py-3 text-[10px] font-black uppercase tracking-widest rounded-xl transition-all ${
+                  className={`flex-1 py-2 text-[9px] font-black uppercase tracking-widest rounded-lg transition-all ${
                     activeTab === role 
-                      ? 'bg-white text-slate-900 shadow-lg border border-slate-200' 
+                      ? 'bg-white text-slate-900 shadow-sm border border-slate-200' 
                       : 'text-slate-400 hover:text-slate-600'
                   }`}
                 >
@@ -107,56 +71,56 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onLogin }
             </div>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-4">
             {!isLoginMode && (
-              <div className="relative group">
-                <UserIcon className="absolute left-6 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-300 group-focus-within:text-green-600 transition-colors" />
+              <div className="relative">
+                <UserIcon className="absolute left-5 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-300" />
                 <input
                   type="text" required
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  className="w-full pl-16 pr-6 py-5 bg-slate-50 border-2 border-transparent rounded-2xl focus:bg-white focus:border-slate-900 outline-none font-bold text-slate-900 placeholder:text-slate-300 transition-all shadow-inner"
-                  placeholder="Organization / Full Name"
+                  className="w-full pl-12 pr-6 py-4 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:border-green-600 outline-none font-bold text-slate-900 placeholder:text-slate-300 transition-all text-sm"
+                  placeholder="Organization / Name"
                 />
               </div>
             )}
 
-            <div className="relative group">
-              <Mail className="absolute left-6 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-300 group-focus-within:text-green-600 transition-colors" />
+            <div className="relative">
+              <Mail className="absolute left-5 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-300" />
               <input
                 type="email" required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full pl-16 pr-6 py-5 bg-slate-50 border-2 border-transparent rounded-2xl focus:bg-white focus:border-slate-900 outline-none font-bold text-slate-900 placeholder:text-slate-300 transition-all shadow-inner"
-                placeholder="Business Email"
+                className="w-full pl-12 pr-6 py-4 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:border-green-600 outline-none font-bold text-slate-900 placeholder:text-slate-300 transition-all text-sm"
+                placeholder="Email Address"
               />
             </div>
 
-            <div className="relative group">
-              <Lock className="absolute left-6 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-300 group-focus-within:text-green-600 transition-colors" />
+            <div className="relative">
+              <Lock className="absolute left-5 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-300" />
               <input
                 type="password" required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full pl-16 pr-6 py-5 bg-slate-50 border-2 border-transparent rounded-2xl focus:bg-white focus:border-slate-900 outline-none font-bold text-slate-900 placeholder:text-slate-300 transition-all shadow-inner"
-                placeholder="Access Token / Password"
+                className="w-full pl-12 pr-6 py-4 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:border-green-600 outline-none font-bold text-slate-900 placeholder:text-slate-300 transition-all text-sm"
+                placeholder="Password"
               />
             </div>
 
-            <div className="pt-6">
-              <Button type="submit" size="lg" className="w-full h-20 text-sm font-black uppercase tracking-[0.2em] rounded-2xl bg-slate-900 hover:bg-black text-white shadow-2xl active:scale-[0.98] transition-all">
-                {isLoginMode ? 'Access Workspace' : 'Initialize Account'}
-                <ArrowRight className="ml-3 h-5 w-5" />
+            <div className="pt-4">
+              <Button type="submit" size="lg" className="w-full h-14 text-xs font-black uppercase tracking-widest rounded-xl bg-slate-900 hover:bg-black text-white shadow-xl">
+                {isLoginMode ? 'Sign In' : 'Create Account'}
+                <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
             </div>
 
-            <div className="text-center pt-8">
+            <div className="text-center pt-6">
               <button 
                 type="button" 
                 onClick={() => setIsLoginMode(!isLoginMode)}
-                className="text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-green-600 transition-colors border-b-2 border-transparent hover:border-green-600 pb-1"
+                className="text-[9px] font-black uppercase tracking-widest text-slate-400 hover:text-green-600 transition-colors"
               >
-                {isLoginMode ? "Need to join the circular network? Register" : "Already a registered partner? Sign In"}
+                {isLoginMode ? "Need a partner account? Sign Up" : "Already registered? Login"}
               </button>
             </div>
           </form>

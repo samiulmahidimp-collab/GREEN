@@ -1,7 +1,8 @@
+
 import React from 'react';
 import { Button } from '../components/Button';
-import { ArrowRight, CloudRain, Zap, HeartPulse, Leaf, ShieldCheck, TrendingDown, XCircle, CheckCircle2, Droplets, Waves, Sun, Recycle, Hammer, Building2 } from 'lucide-react';
-import { DIESEL_PRICE_PER_LITER, MARKET_STATS, IMPACT_STATS } from '../constants';
+import { ArrowRight, CloudRain, Zap, HeartPulse, Leaf, ShieldCheck, TrendingDown, XCircle, CheckCircle2, Droplets, Waves, Sun, Recycle, Hammer, Building2, BarChart3, Users2 } from 'lucide-react';
+import { DIESEL_PRICE_PER_LITER, IMPACT_STATS } from '../constants';
 
 interface LandingProps {
   onGetStarted: () => void;
@@ -92,29 +93,43 @@ export const Landing: React.FC<LandingProps> = ({ onGetStarted, isLoggedIn, onNa
             <div className="lg:block hidden">
               <div className="bg-slate-900/50 backdrop-blur-2xl border border-white/10 p-10 rounded-[3rem] shadow-2xl relative overflow-hidden">
                 <div className="flex justify-between items-center mb-10">
-                   <h3 className="text-xl font-black text-white uppercase tracking-widest">Market Analysis</h3>
-                   <div className="text-[10px] font-black text-green-500 bg-green-500/10 px-3 py-1 rounded-full">LIVE BD DATA</div>
+                   <h3 className="text-xl font-black text-white uppercase tracking-widest flex items-center">
+                     <BarChart3 className="mr-3 h-5 w-5 text-green-500" /> Global Insight
+                   </h3>
+                   <div className="text-[10px] font-black text-green-500 bg-green-500/10 px-3 py-1 rounded-full">SURVEY DATA</div>
                 </div>
                 <div className="space-y-8">
-                  <div className="flex items-end gap-6">
-                     <div className="w-full bg-white/5 rounded-2xl p-6 border border-white/5">
-                        <p className="text-[10px] text-slate-500 font-black uppercase mb-1">Global Market</p>
-                        <p className="text-3xl font-black text-white">${MARKET_STATS.globalMarketValue}</p>
+                  <div className="flex flex-col gap-6">
+                     <div className="bg-white/5 rounded-2xl p-6 border border-white/5 flex items-center gap-6">
+                        <div className="w-12 h-12 bg-green-500/20 rounded-xl flex items-center justify-center">
+                           <Users2 className="text-green-500 h-6 w-6" />
+                        </div>
+                        <div>
+                           <p className="text-2xl font-black text-white">92%</p>
+                           <p className="text-[10px] text-slate-500 font-black uppercase tracking-widest">User Preference for Eco-fuel</p>
+                        </div>
                      </div>
-                     <div className="w-full bg-green-600/10 rounded-2xl p-6 border border-green-500/20">
-                        <p className="text-[10px] text-green-500 font-black uppercase mb-1">BD Market Value</p>
-                        <p className="text-3xl font-black text-white">${MARKET_STATS.bangladeshMarketValue}</p>
+                     <div className="bg-green-600/10 rounded-2xl p-6 border border-green-500/20 flex items-center gap-6">
+                        <div className="w-12 h-12 bg-green-500/20 rounded-xl flex items-center justify-center">
+                           <HeartPulse className="text-green-500 h-6 w-6" />
+                        </div>
+                        <div>
+                           <p className="text-2xl font-black text-white">78%</p>
+                           <p className="text-[10px] text-green-500 font-black uppercase tracking-widest">Health & Emission Improvement</p>
+                        </div>
                      </div>
                   </div>
                   <div className="bg-white/5 p-8 rounded-3xl border border-white/5">
-                     <div className="flex justify-between mb-2">
-                        <span className="text-xs font-bold text-slate-400">Projected Growth (CAGR)</span>
-                        <span className="text-xs font-black text-green-500">+{MARKET_STATS.cagr}</span>
+                     <div className="flex justify-between mb-2 text-xs font-black uppercase tracking-widest">
+                        <span className="text-slate-400">Net Zero Carbon Commitment</span>
+                        <span className="text-green-500">Target 2050</span>
                      </div>
                      <div className="w-full h-2 bg-slate-800 rounded-full overflow-hidden">
-                        <div className="w-[85%] h-full bg-green-500"></div>
+                        <div className="w-[100%] h-full bg-green-500 animate-pulse"></div>
                      </div>
-                     <p className="text-[9px] text-slate-500 mt-4 uppercase font-black">Forecasted 2026 - 2030</p>
+                     <p className="text-[9px] text-slate-500 mt-4 uppercase font-black leading-relaxed italic">
+                       Why shift? Global mandates are moving towards 100% sustainable fuels to prevent irreversible climate damage. Biodiesel is the immediate industrial solution.
+                     </p>
                   </div>
                 </div>
               </div>
@@ -190,7 +205,7 @@ export const Landing: React.FC<LandingProps> = ({ onGetStarted, isLoggedIn, onNa
         </div>
       </section>
 
-      {/* SDG Alignment Section - Now follows Comparison as requested */}
+      {/* SDG Alignment Section */}
       <section className="py-24 bg-slate-50 border-y border-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
            <div className="text-center mb-16">

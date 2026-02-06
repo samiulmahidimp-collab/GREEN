@@ -15,8 +15,8 @@ interface NavbarProps {
 export const Navbar: React.FC<NavbarProps> = ({ user, onLoginClick, onLogout, onNavigate, currentView }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
 
-  // Clean, high-trust white/slate theme
-  const navBg = "bg-white/95 backdrop-blur-md border-b border-slate-200";
+  // Clean, professional white/slate theme
+  const navBg = "bg-white/98 backdrop-blur-md border-b border-slate-100";
   const textColor = "text-slate-600";
   const activeColor = "text-green-600";
 
@@ -43,10 +43,10 @@ export const Navbar: React.FC<NavbarProps> = ({ user, onLoginClick, onLogout, on
 
             <button 
               onClick={() => onNavigate('about')}
-              className={`flex items-center text-[11px] font-black uppercase tracking-[0.2em] transition-all duration-300 hover:scale-105 ${currentView === 'about' ? 'text-green-600' : `${textColor} hover:text-slate-900`}`}
+              className={`flex items-center text-[11px] font-black uppercase tracking-[0.2em] transition-all duration-300 hover:scale-105 ${currentView === 'about' ? activeColor : `${textColor} hover:text-slate-900`}`}
             >
               <Users className="h-4 w-4 mr-2" />
-              About Us
+              Our Team
             </button>
             
             <button 
