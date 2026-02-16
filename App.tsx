@@ -26,6 +26,18 @@ const App: React.FC = () => {
     }
   };
 
+  const handleGuestLogin = () => {
+    const guestUser: User = {
+      id: 'guest-' + Math.random().toString(36).substr(2, 5),
+      name: 'Guest Partner',
+      email: 'guest@greengine.eco',
+      role: UserRole.BUYER,
+      balance: 50000,
+      organization: 'Exploring Partner'
+    };
+    handleLogin(guestUser);
+  };
+
   const handleLogout = () => {
     setUser(null);
     setCurrentView('home');
@@ -95,6 +107,7 @@ const App: React.FC = () => {
         onLogout={handleLogout}
         onNavigate={(v) => navigateTo(v as View)}
         currentView={currentView}
+        onGuestLogin={handleGuestLogin}
       />
       
       <main className="flex-grow">
@@ -107,6 +120,7 @@ const App: React.FC = () => {
         isOpen={isAuthModalOpen}
         onClose={() => setIsAuthModalOpen(false)}
         onLogin={handleLogin}
+        onGuestLogin={handleGuestLogin}
       />
     </div>
   );

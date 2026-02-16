@@ -1,6 +1,6 @@
 import React from 'react';
-import { User } from '../types';
-import { LogOut, Menu, Home, Headphones, LayoutDashboard, Wallet, Users } from 'lucide-react';
+import { User, UserRole } from '../types';
+import { LogOut, Menu, Home, Headphones, LayoutDashboard, Wallet, Users, UserCircle } from 'lucide-react';
 import { Button } from './Button';
 import { Logo } from './Logo';
 
@@ -10,15 +10,20 @@ interface NavbarProps {
   onLogout: () => void;
   onNavigate: (view: string) => void;
   currentView: string;
+  onGuestLogin?: () => void;
 }
 
-export const Navbar: React.FC<NavbarProps> = ({ user, onLoginClick, onLogout, onNavigate, currentView }) => {
+export const Navbar: React.FC<NavbarProps> = ({ user, onLoginClick, onLogout, onNavigate, currentView, onGuestLogin }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
 
   // Clean, professional white/slate theme
   const navBg = "bg-white/98 backdrop-blur-md border-b border-slate-100";
   const textColor = "text-slate-600";
   const activeColor = "text-green-600";
+
+  const handleGuestEntry = () => {
+    if (onGuestLogin) onGuestLogin();
+  };
 
   return (
     <nav className={`sticky top-0 z-50 w-full ${navBg} shadow-sm`}>
@@ -80,9 +85,18 @@ export const Navbar: React.FC<NavbarProps> = ({ user, onLoginClick, onLogout, on
                 </button>
               </div>
             ) : (
-              <Button onClick={onLoginClick} size="md" className="rounded-xl px-8 font-black shadow-xl shadow-green-600/20 active:scale-95 bg-green-600 hover:bg-green-700 text-white">
-                Sign In
-              </Button>
+              <div className="flex items-center gap-4">
+                <button 
+                  onClick={handleGuestEntry}
+                  className="flex items-center text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-green-600 transition-all px-4 py-2 border border-slate-100 hover:border-green-100 rounded-xl"
+                >
+                  <UserCircle className="h-4 w-4 mr-2" />
+                  Try as Guest
+                </button>
+                <Button onClick={onLoginClick} size="md" className="rounded-xl px-8 font-black shadow-xl shadow-green-600/20 active:scale-95 bg-green-600 hover:bg-green-700 text-white">
+                  Sign In
+                </Button>
+              </div>
             )}
           </div>
 
@@ -115,7 +129,10 @@ export const Navbar: React.FC<NavbarProps> = ({ user, onLoginClick, onLogout, on
                <button onClick={onLogout} className="w-full text-red-500 font-black text-xs uppercase tracking-widest py-4 bg-red-50 rounded-2xl">Logout Session</button>
              </div>
           ) : (
-            <Button className="w-full h-16 text-lg rounded-2xl font-black" onClick={() => { onLoginClick(); setIsMobileMenuOpen(false); }}>Partner Sign In</Button>
+            <div className="space-y-4">
+              <Button className="w-full h-16 text-lg rounded-2xl font-black" onClick={() => { onLoginClick(); setIsMobileMenuOpen(false); }}>Partner Sign In</Button>
+              <button onClick={() => { handleGuestEntry(); setIsMobileMenuOpen(false); }} className="w-full h-14 border-2 border-slate-100 text-slate-400 font-black uppercase tracking-widest rounded-2xl text-xs">Continue as Guest</button>
+            </div>
           )}
         </div>
       )}

@@ -1,15 +1,16 @@
 import React, { useState } from 'react';
 import { UserRole, User } from '../types';
 import { Button } from './Button';
-import { X, ShieldCheck, Lock, Mail, User as UserIcon, ArrowRight } from 'lucide-react';
+import { X, ShieldCheck, Lock, Mail, User as UserIcon, ArrowRight, UserCircle } from 'lucide-react';
 
 interface AuthModalProps {
   isOpen: boolean;
   onClose: () => void;
   onLogin: (user: User) => void;
+  onGuestLogin?: () => void;
 }
 
-export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onLogin }) => {
+export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onLogin, onGuestLogin }) => {
   const [activeTab, setActiveTab] = useState<UserRole>(UserRole.BUYER);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -33,6 +34,13 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onLogin }
     };
     onLogin(mockUser);
     onClose();
+  };
+
+  const handleGuestEntry = () => {
+    if (onGuestLogin) {
+      onGuestLogin();
+      onClose();
+    }
   };
 
   return (
@@ -114,13 +122,28 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onLogin }
               </Button>
             </div>
 
-            <div className="text-center pt-6">
+            <div className="flex flex-col items-center gap-4 pt-6">
               <button 
                 type="button" 
                 onClick={() => setIsLoginMode(!isLoginMode)}
                 className="text-[9px] font-black uppercase tracking-widest text-slate-400 hover:text-green-600 transition-colors"
               >
                 {isLoginMode ? "Need a partner account? Sign Up" : "Already registered? Login"}
+              </button>
+              
+              <div className="flex items-center w-full gap-4">
+                <div className="h-px bg-slate-100 flex-grow"></div>
+                <span className="text-[8px] font-black text-slate-300 uppercase tracking-widest">OR</span>
+                <div className="h-px bg-slate-100 flex-grow"></div>
+              </div>
+
+              <button 
+                type="button"
+                onClick={handleGuestEntry}
+                className="flex items-center text-[10px] font-black uppercase tracking-widest text-green-600 hover:text-green-700 transition-all"
+              >
+                <UserCircle className="h-4 w-4 mr-2" />
+                Continue as Guest
               </button>
             </div>
           </form>
